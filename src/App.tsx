@@ -1,17 +1,15 @@
-import React, {useState} from 'react';
-import logo from './logo.svg';
+import React  from 'react';
 import './App.css';
-import Navbar from "./UI/Navbar";
-import TodoForm from "./UI/TodoForm";
+import Navbar from './UI/Navbar';
+import TodoForm from './UI/TodoForm';
 
-function App(){
-
+const App:React.FC=()=>{
   return (
       <div>
         <Navbar />
         <TodoForm />
       </div>
   );
-}
+};
 
 export default App;
