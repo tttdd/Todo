@@ -1,21 +1,21 @@
-import React from "react";
-import {todoType} from "./TypeIntefice";
-import styled from "styled-components";
-import * as events from "events";
+import React,{useMemo} from 'react';
+import {todoType} from './TypeIntefice';
+import styled from 'styled-components';
 
 
 
 const Input=styled.input`
-    border: 0px;
-    background: bottom;
-    font-size: 20px;
-    margin-left: 10px;
-    font-family: Bradley Hand;
-    font-style: italic;
-  :focus-visible{
+  border: 0;
+  background: bottom;
+  font-size: 20px;
+  margin-left: 10px;
+  font-family: Bradley Hand, sans-serif;
+  font-style: italic;
+
+  :focus-visible {
     outline: none;
   }
-  
+
 `;
 
 
@@ -32,12 +32,16 @@ interface TodoListIt{
 const TodoList: React.FC<TodoListIt>=({todo,editTodo,deleteTodo,editToogle,cur_input})=>{
 
 
-
+   const local_todo:todoType[]=useMemo(():todoType[]=>{
+        let local_todo=todo.filter(t=>{
+            return t.value.startsWith(cur_input);
+        });
+       return local_todo;
+    },[cur_input,todo]);
 
     return(
         <ul className="list-group list-group-flush ul-p-t-200">
-            {todo.map(t=>{
-                if(t.value.startsWith(cur_input)){
+            {local_todo.map(t=>{
                return(
                    <li className="list-group-item li-bg" key={t.id}>
                        <input type="checkbox"
@@ -53,11 +57,11 @@ const TodoList: React.FC<TodoListIt>=({todo,editTodo,deleteTodo,editToogle,cur_i
                            </svg>
                        </button>
                    </li>
-               )
-            }})
+               );
+            })
 
             }
         </ul>
-    )
-}
-export default TodoList
+    );
+};
+export default TodoList;
