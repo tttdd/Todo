@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Note from './img/notepad.png';
-import { todoType } from './TypeIntefice';
+import { Todo } from './TypeIntefice';
 import TodoList from './TodoList';
 
 //Styled-Component
@@ -36,26 +36,26 @@ const ContainerT = styled(ContainerI)`
 // interface TodoProps{
 //     addTodo(task:string):void
 // }
-const TodoForm: React.FC = () => {
+const TodoForm = () => {
   //UseState
-  let [todo, setTodo] = useState<todoType[]>([]);
+  let [todos, setTodos] = useState<Todo[]>([]);
   let [input, setInputState] = useState<string>('');
 
   useEffect(() => {
     //Добавляем элементы из local
-    const saved = JSON.parse(localStorage.getItem('todo') || '[]') as todoType[];
-    setTodo(saved);
+    const saved = JSON.parse(localStorage.getItem('todo') || '[]') as Todo[];
+    setTodos(saved);
   }, []);
 
   // добавляет элементы в localStorage, грубо говоря действия выполняються
   //полсе рендеринга
   useEffect(() => {
-    localStorage.setItem('todo', JSON.stringify(todo));
-  }, [todo]);
+    localStorage.setItem('todo', JSON.stringify(todos));
+  }, [todos]);
 
   //Функции реализующие изменения state, изменяет пол
   const editTodo = (id: number, task: string): void => {
-    setTodo((prevState) =>
+    setTodos((prevState) =>
       prevState.map((todo) => {
         if (todo.id === id && todo.chStatus) todo.value = task;
         return todo;
@@ -64,11 +64,11 @@ const TodoForm: React.FC = () => {
   };
 
   const deleteTodo = (id: number): void => {
-    let current_item: todoType | undefined = todo.find((t) => t.id === id);
-    if (current_item?.chStatus === true) setTodo((prevState) => prevState.filter((todo) => todo.id !== id));
+    let current_item: Todo | undefined = todos.find((t) => t.id === id);
+    if (current_item?.chStatus === true) setTodos((prevState) => prevState.filter((todo) => todo.id !== id));
   };
   const editToogle = (id: number, check: boolean): void => {
-    setTodo((prev) =>
+    setTodos((prev) =>
       prev.map((todo) => {
         if (todo.id === id) {
           todo.chStatus = check;
@@ -80,20 +80,17 @@ const TodoForm: React.FC = () => {
   const setInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setInputState(event.target.value);
   };
-  // const filter=(str:string):void=>{
-  //     setTodo(prevState => prevState.filter(todo=>todo.value.includes(str)));
-  // };
 
   const keyPressEnter = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter' && input) {
-      const newTodo: todoType = {
+      const newTodo: Todo = {
         value: input,
         id: Date.now(),
         chStatus: false,
       };
       //Берем в расчет предидущее состояния todo
 
-      if (!todo.filter((t) => t.value === input).length) setTodo((prev) => [newTodo, ...prev]);
+      if (!todos.filter((t) => t.value === input).length) setTodos((prev) => [newTodo, ...prev]);
       setInputState('');
     }
   };
@@ -105,13 +102,7 @@ const TodoForm: React.FC = () => {
         <Input placeholder="Введите задачу..." value={input} onChange={setInput} onKeyPress={keyPressEnter} />
       </ContainerI>
       <ContainerT>
-        <TodoList
-          todo={todo}
-          editTodo={editTodo}
-          deleteTodo={deleteTodo}
-          editToogle={editToogle}
-          cur_input={input}
-        ></TodoList>
+        <TodoList todo={todos} editTodo={editTodo} deleteTodo={deleteTodo} editToogle={editToogle} cur_input={input} />
       </ContainerT>
     </Main>
   );
