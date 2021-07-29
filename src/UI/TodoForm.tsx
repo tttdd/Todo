@@ -20,11 +20,11 @@ const Input = styled.input`
 const Main = styled.div`
   background: #fff;
 `;
-const ContainerI = styled.div`
+const InputContainer = styled.div`
   display: flex;
   justify-content: center;
 `;
-const ContainerT = styled(ContainerI)`
+const TaskContainer = styled(InputContainer)`
   background-image: url(${Note});
   background-size: cover;
   min-height: 800px;
@@ -95,12 +95,12 @@ const TodoForm = () => {
   //Отрисовка
   return (
     <Main>
-      <ContainerI>
+      <InputContainer>
         <Input placeholder="Введите задачу..." value={input} onChange={setInput} onKeyPress={keyPressEnter} />
-      </ContainerI>
-      <ContainerT>
+      </InputContainer>
+      <TaskContainer>
         <TodoList todo={todos} editTodo={editTodo} deleteTodo={deleteTodo} editToogle={editToogle} cur_input={input} />
-      </ContainerT>
+      </TaskContainer>
     </Main>
   );
 };
