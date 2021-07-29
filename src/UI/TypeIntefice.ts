@@ -1,6 +1,5 @@
-export type todoType=
-    {
-        value: string,
-        id:number,
-        chStatus:boolean
-    }
+export type Todo = {
+  value: string;
+  id: number;
+  chStatus: boolean;
+};
