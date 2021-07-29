@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { todoType } from './TypeIntefice';
+import { Todo } from './TypeIntefice';
 import styled from 'styled-components';
 
 const Input = styled.input`
@@ -24,16 +24,8 @@ const InputCheck = styled(Input)`
   font-style: italic;
 `;
 
-interface TodoListIt {
-  todo: todoType[];
-  editTodo(id: number, task: string): void;
-  deleteTodo(id: number): void;
-  editToogle(id: number, check: boolean): void;
-  cur_input: string;
-}
-
-const TodoList: React.FC<TodoListIt> = ({ todo, editTodo, deleteTodo, editToogle, cur_input }) => {
-  const local_todo: todoType[] = useMemo((): todoType[] => {
+const TodoList = ({ todo, editTodo, deleteTodo, editToogle, cur_input }) => {
+  const local_todo: Todo[] = useMemo((): Todo[] => {
     let local_todo = todo.filter((t) => {
       return t.value.startsWith(cur_input);
     });
