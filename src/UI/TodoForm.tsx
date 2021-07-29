@@ -32,10 +32,6 @@ const ContainerT = styled(ContainerI)`
   margin: 0 auto;
 `;
 
-//Props Interface
-// interface TodoProps{
-//     addTodo(task:string):void
-// }
 const TodoForm = () => {
   //UseState
   let [todos, setTodos] = useState<Todo[]>([]);
@@ -47,8 +43,8 @@ const TodoForm = () => {
     setTodos(saved);
   }, []);
 
-  // добавляет элементы в localStorage, грубо говоря действия выполняються
-  //полсе рендеринга
+  //добавляет элементы в localStorage, грубо говоря действия выполняються
+  //до рендеринга
   useEffect(() => {
     localStorage.setItem('todo', JSON.stringify(todos));
   }, [todos]);
@@ -57,23 +53,24 @@ const TodoForm = () => {
   const editTodo = (id: number, task: string): void => {
     setTodos((prevState) =>
       prevState.map((todo) => {
-        if (todo.id === id && todo.chStatus) todo.value = task;
-        return todo;
+        if (todo.id === id && todo.chStatus) return { ...todo, value: task };
+        return { ...todo };
       }),
     );
   };
 
   const deleteTodo = (id: number): void => {
-    let current_item: Todo | undefined = todos.find((t) => t.id === id);
-    if (current_item?.chStatus === true) setTodos((prevState) => prevState.filter((todo) => todo.id !== id));
+    let currentItem: Todo | undefined = todos.find((t) => t.id === id);
+    if (currentItem?.chStatus === true) setTodos((prevState) => prevState.filter((todo) => todo.id !== id));
   };
+
   const editToogle = (id: number, check: boolean): void => {
     setTodos((prev) =>
       prev.map((todo) => {
         if (todo.id === id) {
-          todo.chStatus = check;
+          return { ...todo, chStatus: check };
         }
-        return todo;
+        return { ...todo };
       }),
     );
   };
